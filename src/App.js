@@ -5,6 +5,7 @@ function App() {
   const [gas, setGas] = useState(null);
   const [gasBillAmount, setGasBillAmount] = useState(0);
   const [electricity, setElectricity] = useState(null);
+  const [electricityAmount, setElectricityAmount] = useState(0);
   const handleChangeOnGas = e => {
     setGas(e.target.value);
   };
@@ -12,15 +13,19 @@ function App() {
     setElectricity(e.target.value);
   };
   const handleGasClick = () => {
-    setGasBillAmount(calculateGasBill());
+    setGasBillAmount(calculateBill(gas));
   };
-  const initialGasValue = 11000;
-  const calculateGasBill = () => {
-    let units = gas - initialGasValue;
+  const handleElectricityClick = () => {
+    setElectricityAmount(calculateBill(electricity))
+  }
+  const initialValue = 11000;
+  const calculateBill = (energyType) => {
+    let units = energyType - initialValue;
     let billAmount =
       units <= 100 ? (units * 10) / 100 : ((units - 100) * 20 + 100 * 10) / 100;
     return billAmount;
   };
+
 
   return (
     <div className="App">
@@ -29,7 +34,7 @@ function App() {
         <input
           type="text"
           value={gas}
-          placeholder={`Initial value 11000`}
+          placeholder={`Previous reading ${initialValue}`}
           onChange={handleChangeOnGas}
         />
         <button onClick={handleGasClick}>Calculate</button>
@@ -39,12 +44,12 @@ function App() {
       <input
         type="text"
         value={electricity}
-        placeholder={`Initial value 0`}
+        placeholder={`Previous reading ${initialValue}`}
         onChange={handleChangeOnElectricity}
       />
-      <button>Calculate</button>
+      <button onClick={handleElectricityClick} >Calculate</button>
       </div>
-      <h1>Your bill amounts to £{gasBillAmount}</h1>
+      <h1>Your bill amounts to £{gasBillAmount + electricityAmount}</h1>
     </div>
   );
 }
